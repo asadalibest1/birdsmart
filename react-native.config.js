@@ -4,6 +4,11 @@ module.exports = {
         platforms: {
           android: null
         }
+      },
+      'react-native-google-signin': {
+        platforms: {
+          android: null
+        }
       }
     }
   };

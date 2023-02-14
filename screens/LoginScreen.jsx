@@ -21,7 +21,6 @@ import * as AppleAuthentication from "expo-apple-authentication";
 
 import { FontAwesome } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-
 // External Libraries
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -44,6 +43,12 @@ import LockIcon from "../components/svgComponents/LockIcon";
 import EyeSlashIcon from "../components/svgComponents/EyeSlashIcon";
 import { firebaseConfig } from "../app/services/firebaseConfig";
 import { initializeApp } from "firebase/app";
+// import { useAuthentication } from '../hooks/useAuthentication';
+// import signInWithGoogle from "../screens/Hooks/googleAuth";
+import * as Google from 'expo-auth-session/providers/google';
+import * as Facebook from 'expo-auth-session/providers/facebook';
+import * as AuthSession from 'expo-auth-session';
+import { log } from "react-native-reanimated";
 
 const { width: screenWidth } = Dimensions.get("window");
 const LoginScreen = ({ navigation }) => {
@@ -54,32 +59,32 @@ const LoginScreen = ({ navigation }) => {
       username: Yup.string()
         .required(
           __("loginScreenTexts.formFieldsLabel.username", appSettings.lng) +
-            " " +
-            __("loginScreenTexts.formValidation.requiredField", appSettings.lng)
+          " " +
+          __("loginScreenTexts.formValidation.requiredField", appSettings.lng)
         )
         .min(
           3,
           __("loginScreenTexts.formFieldsLabel.username", appSettings.lng) +
-            " " +
-            __(
-              "loginScreenTexts.formValidation.minimumLength3",
-              appSettings.lng
-            )
+          " " +
+          __(
+            "loginScreenTexts.formValidation.minimumLength3",
+            appSettings.lng
+          )
         ),
       password: Yup.string()
         .required(
           __("loginScreenTexts.formFieldsLabel.password", appSettings.lng) +
-            " " +
-            __("loginScreenTexts.formValidation.requiredField", appSettings.lng)
+          " " +
+          __("loginScreenTexts.formValidation.requiredField", appSettings.lng)
         )
         .min(
           3,
           __("loginScreenTexts.formFieldsLabel.password", appSettings.lng) +
-            " " +
-            __(
-              "loginScreenTexts.formValidation.minimumLength3",
-              appSettings.lng
-            )
+          " " +
+          __(
+            "loginScreenTexts.formValidation.minimumLength3",
+            appSettings.lng
+          )
         ),
     })
   );
@@ -92,6 +97,8 @@ const LoginScreen = ({ navigation }) => {
   const [socialErrorMessage, setSocialErrorMessage] = useState();
   const [activeSocialType, setActiveSocialType] = useState();
 
+
+
   useEffect(() => {
     if (
       socialConfig?.enabled &&
@@ -100,6 +107,7 @@ const LoginScreen = ({ navigation }) => {
       // initGoogle();
     }
   }, []);
+
   const initGoogle = () => {
     GoogleSignin.configure({
       scopes: ["PROFILE", "EMAIL"], // what API you want to access on behalf of the user, default is email and profile
@@ -109,14 +117,69 @@ const LoginScreen = ({ navigation }) => {
     });
   };
 
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId: "731318915083-58r20ecp6b9qi5p0euak66025g6ofj1t.apps.googleusercontent.com",
+    iosClientId: "731318915083-895ud98nuo8a3ca1m3fe3cu0ha7qquu9.apps.googleusercontent.com",
+    expoClientId: "731318915083-m7ggsds1fmjee4c1nl3udjmrnmdc5kiv.apps.googleusercontent.com"
+  });
+
+  const [, , promptFacebookAsync] = Facebook.useAuthRequest({
+    clientId: '1366970683843742',
+    redirectUri: "https://auth.expo.io/@asadalibest1/birdsmart"
+
+  });
+  // const [, responseFB, promptFB] = Facebook.useAuthRequest(
+  //   {
+  //     clientId: "a6f3f8576c323d53279c330c43b7c602", // Must be defined in JavaScript, won't use app.json values.
+  //     redirectUri: AuthSession.makeRedirectUri({ useProxy: true }), // useProxy here…
+  //   },
+  //   { useProxy: true } // …and also here
+  // );
+
+
+  // const [fbRequest, fbResponse, promptFb] = Facebook.useAuthRequest(
+  //   {
+  //     clientId: "a6f3f8576c323d53279c330c43b7c602", // Must be defined in JavaScript, won't use app.json values.
+  //     redirectUri: AuthSession.makeRedirectUri({ useProxy: true }), // useProxy here…
+  //   },
+  //   { useProxy: true } // …and also here
+  // );
+
+  useEffect(() => {
+    const getData = async () => {
+      if (response?.type === "success") {
+        // setAuth(response.authentication);
+
+        let userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+          headers: { Authorization: `Bearer ${response.authentication.accessToken}` }
+        });
+
+        userInfoResponse.json().then(data => {
+          handleSocialLoginRequest({ ...data, name: data.given_name, type: "google", access_token: response?.authentication?.accessToken });
+
+        }).catch(err => console.log('err123', err));
+
+        // const persistAuth = async () => {
+        //   await AsyncStorage.setItem("auth", JSON.stringify(response.authentication));
+        // };
+        // persistAuth();
+      }
+    }
+    getData();
+  }, [response]);
+
+
   const signInAsyncGFB = async () => {
     setSocialErrorMessage();
     setActiveSocialType("google_firebase");
     setSocialOverlayActive(true);
     try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      handleSocialLoginRequest(userInfo?.idToken || "", "google_firebase");
+      // await GoogleSignin.hasPlayServices();
+      // const userInfo = await GoogleSignin.signIn();
+
+      // handleSocialLoginRequest(userInfo?.idToken || "", "google_firebase");
+      promptAsync({ useProxy: true, showInRecents: true })
+
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -129,6 +192,8 @@ const LoginScreen = ({ navigation }) => {
       }
     }
   };
+
+
   const handleLogin = (values) => {
     setResponseErrorMessage();
     setLoading(true);
@@ -157,17 +222,17 @@ const LoginScreen = ({ navigation }) => {
         } else {
           setResponseErrorMessage(
             res?.data?.message ||
-              res?.data?.error_message ||
-              res?.data?.error ||
-              res?.problem ||
-              __("loginScreenTexts.customResponseError", appSettings.lng)
+            res?.data?.error_message ||
+            res?.data?.error ||
+            res?.problem ||
+            __("loginScreenTexts.customResponseError", appSettings.lng)
           );
           handleError(
             res?.data?.message ||
-              res?.data?.error_message ||
-              res?.data?.error ||
-              res?.problem ||
-              __("loginScreenTexts.customResponseError", appSettings.lng)
+            res?.data?.error_message ||
+            res?.data?.error ||
+            res?.problem ||
+            __("loginScreenTexts.customResponseError", appSettings.lng)
           );
           setLoading(false);
         }
@@ -269,15 +334,15 @@ const LoginScreen = ({ navigation }) => {
             } else {
               setSocialErrorMessage(
                 res?.data?.error_message ||
-                  res?.data?.error ||
-                  res?.problem ||
-                  __("loginScreenTexts.customResponseError", appSettings.lng)
+                res?.data?.error ||
+                res?.problem ||
+                __("loginScreenTexts.customResponseError", appSettings.lng)
               );
               handleError(
                 res?.data?.error_message ||
-                  res?.data?.error ||
-                  res?.problem ||
-                  __("loginScreenTexts.customResponseError", appSettings.lng)
+                res?.data?.error ||
+                res?.problem ||
+                __("loginScreenTexts.customResponseError", appSettings.lng)
               );
             }
           })
@@ -301,12 +366,29 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  const handleFacebookLoginPress = () => {
-    setSocialErrorMessage();
-    setActiveSocialType("facebook");
-    setSocialOverlayActive(true);
-    loginWithFBReadPermissionAsync();
+  const handleFacebookLoginPress = async () => {
+    promptFacebookAsync().then(async (response) => {
+
+      let userInfoResponse = await fetch(`https://graph.facebook.com/v16.0/me?fields=id%2Cname%2Cemail&access_token=${response.authentication.accessToken}`, {
+        headers: { Authorization: `Bearer ${response.authentication.accessToken}` }
+      });
+
+      userInfoResponse.json().then(data => {
+
+        handleSocialLoginRequest({ ...data, type: "facebook", access_token: response?.authentication?.accessToken });
+      });
+
+    })
   };
+
+
+
+  // const handleFacebookLoginPress = () => {
+  //   setSocialErrorMessage();
+  //   setActiveSocialType("facebook");
+  //   setSocialOverlayActive(true);
+  //   loginWithFBReadPermissionAsync();
+  // };
 
   const loginWithFBReadPermissionAsync = async () => {
     try {
@@ -327,18 +409,32 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  const handleSocialLoginRequest = (access_token, type) => {
-    if (!access_token || !type) {
-      setSocialOverlayActive(false);
-      return true;
-    }
+  const handleSocialLoginRequest = (values) => {
+    // if (!access_token || !type) {
+    //   setSocialOverlayActive(false);
+    //   return true;
+    // }
+
     api
       .post("social-login", {
-        access_token: access_token,
-        type: type,
+        access_token: values?.access_token,
+        type: values?.type,
+        name: values?.name,
+        sub: values?.name,
+        email: values?.email,
+        given_name: values?.name,
+        family_name: values?.name,
+        phone: values?.phone ? values?.phone : null,
+        pp_thumb_url: values?.picture ? values?.picture : null,
+        id: values?.id,
+        user_id: values?.id,
+        apple_user: 1234567890,
+
       })
       .then((res) => {
+        console.log('res1', res);
         if (res.ok) {
+
           dispatch({
             type: "SET_AUTH_DATA",
             data: {
@@ -355,21 +451,22 @@ const LoginScreen = ({ navigation }) => {
         } else {
           setSocialErrorMessage(
             res?.data?.message ||
-              res?.data?.error_message ||
-              res?.data?.error ||
-              res?.problem ||
-              __("loginScreenTexts.customResponseError", appSettings.lng)
+            res?.data?.error_message ||
+            res?.data?.error ||
+            res?.problem ||
+            __("loginScreenTexts.customResponseError", appSettings.lng)
           );
           handleError(
             res?.data?.message ||
-              res?.data?.error_message ||
-              res?.data?.error ||
-              res?.problem ||
-              __("loginScreenTexts.customResponseError", appSettings.lng)
+            res?.data?.error_message ||
+            res?.data?.error ||
+            res?.problem ||
+            __("loginScreenTexts.customResponseError", appSettings.lng)
           );
           setActiveSocialType();
         }
-      });
+      })
+      .catch((err) => console.log('SocialErrorMessage err', err));
   };
 
   const handleSocialLoginCancel = () => {
@@ -389,7 +486,7 @@ const LoginScreen = ({ navigation }) => {
     <KeyboardAvoidingView
       behavior={ios ? "padding" : "height"}
       style={{ flex: 1, backgroundColor: "#f8f8f8" }}
-      // keyboardVerticalOffset={ios ? 80 : 0}
+    // keyboardVerticalOffset={ios ? 80 : 0}
     >
       <TouchableOpacity
         style={{ position: "absolute", padding: screenWidth * 0.03, zIndex: 5 }}
@@ -668,68 +765,71 @@ const LoginScreen = ({ navigation }) => {
                     </Text>
                   </TouchableOpacity>
                 )}
+                {/* <FacebookApp /> */}
 
                 {socialConfig?.socialPlatforms?.includes("google") && (
-                  <TouchableOpacity
-                    style={[
-                      {
-                        backgroundColor: COLORS.white,
-                        marginBottom: 10,
-                        padding: 10,
-                        alignItems: "center",
-                        borderRadius: 3,
-                        flexDirection: "row",
-                        justifyContent: "center",
-                        width: "48%",
-                        marginLeft: rtl_support ? 0 : "2%",
-                        marginRight: rtl_support ? "2%" : 0,
-                        elevation: 1,
-                        shadowColor: COLORS.gray,
-                        shadowOpacity: 0.2,
-                        shadowRadius: 1,
-                        shadowOffset: {
-                          height: 1,
-                          width: 1,
-                        },
-                      },
-                      rtlView,
-                    ]}
-                    // onPress={signInAsyncGFB}
-                    disabled={socialOverlayActive || loading}
-                  >
-                    <View
+                  <>
+                    <TouchableOpacity
                       style={[
                         {
-                          height: 18,
-                          width: 18,
+                          backgroundColor: COLORS.white,
+                          marginBottom: 10,
+                          padding: 10,
                           alignItems: "center",
+                          borderRadius: 3,
+                          flexDirection: "row",
                           justifyContent: "center",
+                          width: "48%",
+                          marginLeft: rtl_support ? 0 : "2%",
+                          marginRight: rtl_support ? "2%" : 0,
+                          elevation: 1,
+                          shadowColor: COLORS.gray,
+                          shadowOpacity: 0.2,
+                          shadowRadius: 1,
+                          shadowOffset: {
+                            height: 1,
+                            width: 1,
+                          },
                         },
-                        rtl_support ? { marginLeft: 10 } : { marginRight: 10 },
+                        rtlView,
                       ]}
+                      onPress={signInAsyncGFB}
+                      disabled={socialOverlayActive || loading}
                     >
-                      <Image
-                        source={require("../assets/google_logo.png")}
+                      <View
+                        style={[
+                          {
+                            height: 18,
+                            width: 18,
+                            alignItems: "center",
+                            justifyContent: "center",
+                          },
+                          rtl_support ? { marginLeft: 10 } : { marginRight: 10 },
+                        ]}
+                      >
+                        <Image
+                          source={require("../assets/google_logo.png")}
+                          style={{
+                            height: 18,
+                            width: 18,
+                            resizeMode: "contain",
+                          }}
+                        />
+                      </View>
+                      <Text
                         style={{
-                          height: 18,
-                          width: 18,
-                          resizeMode: "contain",
+                          fontSize: 16,
+                          color: COLORS.text_gray,
+                          fontWeight: "bold",
                         }}
-                      />
-                    </View>
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        color: COLORS.text_gray,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {__(
-                        "loginScreenTexts.socialButtonTitle.google",
-                        appSettings.lng
-                      )}
-                    </Text>
-                  </TouchableOpacity>
+                      >
+                        {__(
+                          "loginScreenTexts.socialButtonTitle.google",
+                          appSettings.lng
+                        )}
+                      </Text>
+                    </TouchableOpacity>
+                  </>
                 )}
                 {ios && (
                   <AppleAuthentication.AppleAuthenticationButton
@@ -788,7 +888,7 @@ const LoginScreen = ({ navigation }) => {
                 // ignore app already initialized error in snack
               }
             }
-            config?.verification
+            !config?.verification
               ? navigation.navigate(routes.oTPScreen, { source: "signup" })
               : navigation.navigate(routes.signUpScreen);
           }}

@@ -346,7 +346,7 @@ const ChatScreenSingle = ({ navigation, route }) => {
               ]}
               numberOfLines={1}
             >
-              {decodeString(listingData.title)}
+              {decodeString(listingData?.title)}
             </Text>
             <View>
               <Text
@@ -520,7 +520,7 @@ const ChatScreenSingle = ({ navigation, route }) => {
               ]}
               numberOfLines={1}
             >
-              {decodeString(listingData.title)}
+              {decodeString(listingData?.title)}
             </Text>
             <View>
               <Text

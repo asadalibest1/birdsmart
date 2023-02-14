@@ -356,7 +356,7 @@ const ChatScreen = ({ navigation, route }) => {
               ]}
               numberOfLines={1}
             >
-              {decodeString(listingData.title)}
+              {decodeString(listingData?.title)}
             </Text>
             <View
               style={[{ flexDirection: "row", alignItems: "center" }, rtlView]}
@@ -534,7 +534,7 @@ const ChatScreen = ({ navigation, route }) => {
               ]}
               numberOfLines={1}
             >
-              {decodeString(listingData.title)}
+              {decodeString(listingData?.title)}
             </Text>
             <View
               style={[{ flexDirection: "row", alignItems: "center" }, rtlView]}

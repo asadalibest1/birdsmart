@@ -66,8 +66,7 @@ const OTPVerificationScreen = ({ route, navigation }) => {
   const phoneInput = useRef(null);
   const offsetX = useRef(new Animated.Value(0)).current;
   const handleRequestOTP = () => {
-    setOtpLoading(true);
-    if (config?.verification?.gateway === "firebase") {
+    Alert.alert('ffsdds', 'dsds')// The FirebaseRecaptchaVerifierModal ref implements the
       api
         .post("verification/send-otp", {
           phone: formattedNumber,
@@ -85,39 +84,12 @@ const OTPVerificationScreen = ({ route, navigation }) => {
             removeAuthToken();
           }
         });
-    }
-    if (config?.verification?.gateway === "twilio") {
-      if (user) {
-        setAuthToken(auth_token);
-      }
-      api
-        .post("verification/send-otp", {
-          phone: formattedNumber,
-          gateway: config?.verification?.gateway,
-        })
-        .then((res) => {
-          if (res?.ok) {
-            Animated.timing(offsetX, {
-              toValue: -screenWidth,
-              duration: 1000,
-              useNativeDriver: false,
-            }).start();
-            setOTPSent(true);
-          } else {
-            alert(res?.data?.message || res?.data?.data?.error);
-          }
-        })
-        .then(() => {
-          if (user) {
-            removeAuthToken();
-          }
-          setOtpLoading(false);
-        });
-    }
+  
   };
 
   const firebaseOTPRequest = async () => {
-    // The FirebaseRecaptchaVerifierModal ref implements the
+    
+    
     // FirebaseAuthApplicationVerifier interface and can be
     // passed directly to `verifyPhoneNumber`.
     // try {
@@ -342,12 +314,9 @@ const OTPVerificationScreen = ({ route, navigation }) => {
 
           <PhoneInput
             ref={phoneInput}
-            defaultValue={route?.params?.phone || ""}
-            defaultCode={
-              config?.verification?.default_country ||
-              miscConfig?.defaulTCountryCode ||
-              "US"
-            }
+            // defaultValue={route?.params?.phone || ""}
+            defaultValue={'3181038402'}
+            defaultCode={"PK"}
             layout="first"
             onChangeText={(text) => {
               setNumber(text);

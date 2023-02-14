@@ -36,8 +36,8 @@ import MessageIcon from "../components/svgComponents/MessageIcon";
 import ProfileTickIcon from "../components/svgComponents/ProfileTickIcon";
 import CallIcon from "../components/svgComponents/CallIcon";
 import LockIcon from "../components/svgComponents/LockIcon";
-import ScatteredBg from "../components/svgComponents/ScatteredBg";
-import BuildingBg from "../components/svgComponents/BuildingBg";
+// import ScatteredBg from "../components/svgComponents/ScatteredBg";
+// import BuildingBg from "../components/svgComponents/BuildingBg";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("screen");
 const SignUpScreen = ({ navigation, route }) => {

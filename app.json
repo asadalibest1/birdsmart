@@ -50,12 +50,14 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "bitcode": "Debug",
       "usesAppleSignIn": true,
       "supportsTablet": true,
-      "bundleIdentifier": "com.yourapp",
+      "bundleIdentifier": "com.birdsmart",
       "buildNumber": "1",
       "usesIcloudStorage": true,
       "infoPlist": {
@@ -67,14 +69,27 @@
         "NSLocationAlwaysUsageDescription": "Classima uses device location on listing information, Listing search Data and User information.",
         "NSMicrophoneUsageDescription": "Classima uses your microphone while taking video of your product for uploading in listing information.",
         "CFBundleAllowMixedLocalizations": true,
-        "UIBackgroundModes": ["remote-notification"]
+        "googleServicesFile": "./GoogleService-Info.plist",
+        "UIBackgroundModes": [
+          "remote-notification"
+        ],
+        "NSUserTrackingUsageDescription": "Classima wants to track you to collect IDFA to deliver personalised ads.",
+        "SKAdNetworkItems": [
+          {
+            "SKAdNetworkIdentifier": "v9wttpbfk9.skadnetwork"
+          },
+          {
+            "SKAdNetworkIdentifier": "n38lu8286q.skadnetwork"
+          }
+        ]
       },
       "config": {
         "googleMapsApiKey": "2bLSVyGX5GET2wARP0noZInG_AIzaSyCs0TJfgg"
       }
     },
     "android": {
-      "package": "com.yourapp",
+      "googleServicesFile": "./google-services.json",
+      "package": "com.birdsmart",
       "config": {
         "googleMaps": {
           "apiKey": "2bLSVyGX5GET2wARP0noZInG_AIzaSyCs0TJfgg"
@@ -105,6 +120,11 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "scheme": "classima"
+    "scheme": "com.birdsmart",
+    "extra": {
+      "eas": {
+        "projectId": "276d5002-23a2-44b8-9a7a-e4aed1bc9228"
+      }
+    }
   }
 }

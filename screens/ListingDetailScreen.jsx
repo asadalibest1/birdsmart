@@ -458,7 +458,7 @@ const ListingDetailScreen = ({ route, navigation }) => {
     }
     const data = {
       id: listingData.listing_id,
-      title: listingData.title,
+      title: listingData?.title,
       images: listingData.images,
       category: listingData.categories,
       location: listingData.contact.locations,
@@ -479,7 +479,7 @@ const ListingDetailScreen = ({ route, navigation }) => {
 
     const data = {
       id: listingData.listing_id,
-      title: listingData.title,
+      title: listingData?.title,
     };
     if (user !== null && user.id !== listingData.author_id) {
       navigation.navigate(routes.sendEmailScreen, {
@@ -638,7 +638,7 @@ const ListingDetailScreen = ({ route, navigation }) => {
     }
     navigation.navigate(routes.reportScreen, {
       listingId: listingData.listing_id,
-      listingTitle: listingData.title,
+      listingTitle: listingData?.title,
     });
   };
 
@@ -1281,7 +1281,7 @@ const marker = L.marker([${
                   >
                     {/* Title */}
                     <Text style={[styles.listingTitle, rtlTextA]}>
-                      {decodeString(listingData.title)}
+                      {decodeString(listingData?.title)}
                     </Text>
 
                     {/* Other Badges */}
