@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "126574956666",
+    "project_id": "birdsemart-d7a1a",
+    "storage_bucket": "birdsemart-d7a1a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:126574956666:android:ffd54a363686feaf062bc3",
+        "android_client_info": {
+          "package_name": "com.birdsemart.birdsemart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "126574956666-15kiehijfk1sml3cjj6mn1cu6pdm5q1a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaOD7RwLtNkUZrcMAdfIl3M6GT8Xp_QXY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "126574956666-15kiehijfk1sml3cjj6mn1cu6pdm5q1a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "126574956666-h3iav6nm9bu09i14nkt9f83ofi7fdgbi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.birdsmart"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
