@@ -17,7 +17,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/icon.png",
+          "icon": "./assets/icon96x96.png",
           "color": "#ffffff",
           "mode": "production"
         }
@@ -41,7 +41,7 @@
       ]
     ],
     "notification": {
-      "icon": "./assets/icon.png",
+      "icon": "./assets/icon96x96.png",
       "color": "#ffffff",
       "iosDisplayInForeground": true,
       "androidMode": "default"
@@ -93,7 +93,7 @@
         }
       },
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#fff"
       },
       "permissions": [
@@ -115,7 +115,7 @@
       "versionCode": 1
     },
     "web": {
-      "favicon": "./assets/icon.png"
+      "favicon": "./assets/favicon.png"
     },
     "scheme": "classima",
     "extra": {

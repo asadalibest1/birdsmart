@@ -888,7 +888,7 @@ const LoginScreen = ({ navigation }) => {
                 // ignore app already initialized error in snack
               }
             }
-            !config?.verification
+            config?.verification
               ? navigation.navigate(routes.oTPScreen, { source: "signup" })
               : navigation.navigate(routes.signUpScreen);
           }}
