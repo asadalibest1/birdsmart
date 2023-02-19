@@ -92,7 +92,7 @@ const DrawerScreen = (props) => {
           })}
         </View>
       </DrawerContentScrollView>
-      <View style={styles.footerSectionWrap}>
+      {/* <View style={styles.footerSectionWrap}>
         <View style={styles.footerContentWrap}>
           <Text style={styles.copyrightText}>
             {__("drawerScreenTexts.copyrightText", appSettings.lng)}{" "}
@@ -101,7 +101,7 @@ const DrawerScreen = (props) => {
             </Text>
           </Text>
         </View>
-      </View>
+      </View> */}
     </View>
   );
 };

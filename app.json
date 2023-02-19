@@ -17,7 +17,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/icon96x96.png",
+          "icon": "./assets/icon.png",
           "color": "#ffffff",
           "mode": "production"
         }
@@ -28,13 +28,12 @@
           "userTrackingPermission": "Classima wants to track you to collect IDFA to deliver personalised ads."
         }
       ],
-      "@react-native-google-signin/google-signin",
       [
         "react-native-fbsdk-next",
         {
-          "appID": "1:126574956666:ios:f83d35731853e624062bc3",
-          "clientToken": "126574956666-h3iav6nm9bu09i14nkt9f83ofi7fdgbi.apps.googleusercontent.com",
-          "displayName": "Birdsmart",
+          "appID": "471576887606340",
+          "clientToken": "7c51e110a707888f918478cebdcbcf7d",
+          "displayName": "Classima 1",
           "advertiserIDCollectionEnabled": false,
           "autoLogAppEventsEnabled": false,
           "isAutoInitEnabled": true
@@ -42,7 +41,7 @@
       ]
     ],
     "notification": {
-      "icon": "./assets/icon96x96.png",
+      "icon": "./assets/icon.png",
       "color": "#ffffff",
       "iosDisplayInForeground": true,
       "androidMode": "default"
@@ -57,7 +56,7 @@
       "bitcode": "Debug",
       "usesAppleSignIn": true,
       "supportsTablet": true,
-      "bundleIdentifier": "com.birdsmart",
+      "bundleIdentifier": "com.yourapp",
       "buildNumber": "1",
       "usesIcloudStorage": true,
       "infoPlist": {
@@ -69,7 +68,6 @@
         "NSLocationAlwaysUsageDescription": "Classima uses device location on listing information, Listing search Data and User information.",
         "NSMicrophoneUsageDescription": "Classima uses your microphone while taking video of your product for uploading in listing information.",
         "CFBundleAllowMixedLocalizations": true,
-        "googleServicesFile": "./GoogleService-Info.plist",
         "UIBackgroundModes": [
           "remote-notification"
         ],
@@ -88,15 +86,14 @@
       }
     },
     "android": {
-      "googleServicesFile": "./google-services.json",
-      "package": "com.birdsmart",
+      "package": "com.yourapp",
       "config": {
         "googleMaps": {
           "apiKey": "2bLSVyGX5GET2wARP0noZInG_AIzaSyCs0TJfgg"
         }
       },
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#fff"
       },
       "permissions": [
@@ -118,13 +115,17 @@
       "versionCode": 1
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/icon.png"
     },
-    "scheme": "com.birdsmart",
+    "scheme": "classima",
     "extra": {
       "eas": {
         "projectId": "276d5002-23a2-44b8-9a7a-e4aed1bc9228"
       }
     }
+  },
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-xxxxxxxx~xxxxxxxx",
+    "ios_app_id": "ca-app-pub-xxxxxxxx~xxxxxxxx"
   }
 }
